@@ -1,14 +1,20 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+	getAuth,
+	signInWithRedirect,
+	signInWithPopup,
+	GoogleAuthProvider,
+	createUserWithEmailAndPassword,
+} from 'firebase/auth';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAxGQYa7pNkwtqXJgvs8Qihl12VyS0YgKs',
-  authDomain: 'strive-22-db.firebaseapp.com',
-  projectId: 'strive-22-db',
-  storageBucket: 'strive-22-db.appspot.com',
-  messagingSenderId: '430640204245',
-  appId: '1:430640204245:web:4242b1d745a5d061d2555c'
+	apiKey: 'AIzaSyAxGQYa7pNkwtqXJgvs8Qihl12VyS0YgKs',
+	authDomain: 'strive-22-db.firebaseapp.com',
+	projectId: 'strive-22-db',
+	storageBucket: 'strive-22-db.appspot.com',
+	messagingSenderId: '430640204245',
+	appId: '1:430640204245:web:4242b1d745a5d061d2555c',
 };
 
 // Initialize Firebase
@@ -17,42 +23,42 @@ const firebaseApp = initializeApp(firebaseConfig);
 const googleProvider = new GoogleAuthProvider();
 
 googleProvider.setCustomParameters({
-  prompt: 'select_account'
+	prompt: 'select_account',
 });
 
 export const auth = getAuth();
 // export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
-export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
+export const signInWithGoogleRedirect = () =>
+	signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
 
 export const createUserDocFromAuth = async (userAuth, otherInfo = {}) => {
+	if (!userAuth) return;
 
-  if (!userAuth) return;
+	const userDocRef = doc(db, 'users', userAuth.uid);
+	const userSnapshot = await getDoc(userDocRef);
 
-  const userDocRef = doc(db, 'users', userAuth.uid)
-  const userSnapshot = await getDoc(userDocRef);
+	if (!userSnapshot.exists()) {
+		const { displayName, email } = userAuth;
+		const createdAt = new Date();
 
-  if (!userSnapshot.exists()) {
-    const { displayName, email } = userAuth;
-    const createdAt = new Date();
+		try {
+			await setDoc(userDocRef, {
+				displayName,
+				email,
+				createdAt,
+				...otherInfo,
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-    try {
-      await setDoc(userDocRef, {
-        displayName,
-        email,
-        createdAt,
-        ...otherInfo
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  return userDocRef;
-}
+	return userDocRef;
+};
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
-  if (!email || !password) return;
-  return await createUserWithEmailAndPassword(auth, email, password);
-}
+	if (!email || !password) return;
+	return await createUserWithEmailAndPassword(auth, email, password);
+};
