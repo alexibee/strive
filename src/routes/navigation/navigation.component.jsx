@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, redirect } from 'react-router-dom';
 import './navigation.styles.scss';
 
 import CartIcon from '../../components/cart-icon/cart-icon.component';
@@ -28,7 +28,7 @@ const Navigation = () => {
 				<div className='nav-links-container'>
 					<Link
 						className='nav-link'
-						to='/shop'
+						to={'/shop'}
 					>
 						SHOP
 					</Link>
@@ -37,7 +37,6 @@ const Navigation = () => {
 							className='nav-link'
 							onClick={signOutUser}
 						>
-							{' '}
 							SIGN OUT
 						</span>
 					) : (

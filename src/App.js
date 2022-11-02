@@ -1,11 +1,14 @@
 import Home from './routes/home/home.component';
 import Navigation from './routes/navigation/navigation.component';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, redirect } from 'react-router-dom';
 import Authentication from './routes/authentication/authentication.component';
 import Shop from './routes/shop/shop.component';
 import Checkout from './routes/checkout/checkout.component';
+import { UserContext } from './contexts/user.context';
+import { useContext } from 'react';
 
 const App = () => {
+	const { currentUser } = useContext(UserContext);
 	return (
 		<Routes>
 			<Route
@@ -17,12 +20,12 @@ const App = () => {
 					element={<Home />}
 				/>
 				<Route
-					path='shop'
-					element={<Shop />}
+					path='shop/*'
+					element={currentUser ? <Shop /> : <Authentication />}
 				/>
 				<Route
 					path='auth'
-					element={<Authentication />}
+					element={!currentUser ? <Authentication /> : <Home />}
 				/>
 				<Route
 					path='checkout'
