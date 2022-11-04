@@ -1,9 +1,13 @@
 import logger from 'redux-logger';
 import { configureStore } from '@reduxjs/toolkit';
 import { userReducer } from './user/user.reducer';
+import { categoriesReducer } from './categories/category.reducer';
+import { cartReducer } from './cart/cart.reducer';
 
-export const rootReducer = {
+const rootReducer = {
 	user: userReducer,
+	categories: categoriesReducer,
+	cart: cartReducer,
 };
 
 const middlewares = [logger];

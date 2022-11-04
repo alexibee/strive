@@ -1,16 +1,20 @@
-import Button from '../button/button.component';
 import './cart-item.styles.scss';
-import { CartContext } from '../../contexts/cart.context';
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import {
+	addItemToCart,
+	decreaseItemQuantity,
+} from '../../store/cart/cart.action';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectCartItems } from '../../store/cart/cart.selector';
 
 const CartItem = ({ item }) => {
-	const { addItemToCart, reduceItemQuantity } = useContext(CartContext);
-
 	const { name, imageUrl, quantity, price } = item;
+	const cartItems = useSelector(selectCartItems);
+	const dispatch = useDispatch();
 
-	const addItemHandler = () => addItemToCart(item);
-	const removeItemHandler = () => reduceItemQuantity(item);
+	const addItemHandler = () => dispatch(addItemToCart(cartItems, item));
+	const removeItemHandler = () =>
+		dispatch(decreaseItemQuantity(cartItems, item));
 
 	return (
 		<div className='cart-item-container'>

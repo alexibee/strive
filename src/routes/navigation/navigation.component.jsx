@@ -9,12 +9,12 @@ import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component
 
 import { ReactComponent as StriveLogo } from '../../assets/strive_logo.svg';
 
-import { CartContext } from '../../contexts/cart.context';
 import { signOutUser } from '../../utils/firebase/firebase.utils';
+import { selectIsCartOpen } from '../../store/cart/cart.selector';
 
 const Navigation = () => {
 	const currentUser = useSelector((state) => state.user.currentUser);
-	const { isCartOpen } = useContext(CartContext);
+	const isCartOpen = useSelector(selectIsCartOpen);
 
 	return (
 		<>
@@ -34,12 +34,13 @@ const Navigation = () => {
 						SHOP
 					</Link>
 					{currentUser ? (
-						<span
+						<Link
 							className='nav-link'
+							to='/'
 							onClick={signOutUser}
 						>
 							SIGN OUT
-						</span>
+						</Link>
 					) : (
 						<Link
 							className='nav-link'
