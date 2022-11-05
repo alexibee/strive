@@ -21,7 +21,9 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const middlewares = [process.env.NODE_ENV === 'development' && logger];
+const middlewares = [process.env.NODE_ENV === 'development' && logger].filter(
+	Boolean
+);
 
 export const store = configureStore({
 	reducer: persistedReducer,
