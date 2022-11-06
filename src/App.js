@@ -1,37 +1,30 @@
 import Home from './routes/home/home.component';
 import Navigation from './routes/navigation/navigation.component';
-import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Routes, Route } from 'react-router-dom';
 import Authentication from './routes/authentication/authentication.component';
 import Shop from './routes/shop/shop.component';
 import Checkout from './routes/checkout/checkout.component';
 import { useEffect } from 'react';
-import { setCurrentUser } from './store/user/user.action';
+import { setCurrentUserAsync } from './store/user/user.action';
 
-import {
-	createUserDocFromAuth,
-	onAuthStateChangedListener,
-} from './utils/firebase/firebase.utils';
-import { selectCurrentUser } from './store/user/user.selector';
+import { onAuthStateChangedListener } from './utils/firebase/firebase.utils';
+import PrivateRoute from './routes/private-route/PrivateRoute';
 
 const App = () => {
 	const dispatch = useDispatch();
-	const currentUser = useSelector(selectCurrentUser);
 
 	useEffect(() => {
-		const unsubscribe = onAuthStateChangedListener((user) => {
-			if (user) {
-				createUserDocFromAuth(user);
-			}
-			dispatch(setCurrentUser(user));
-		});
-
+		const unsubscribe = onAuthStateChangedListener((user) =>
+			dispatch(setCurrentUserAsync(user))
+		);
 		return unsubscribe;
 	}, []);
 
 	return (
 		<Routes>
 			<Route
+				exact
 				path='/'
 				element={<Navigation />}
 			>
@@ -41,15 +34,23 @@ const App = () => {
 				/>
 				<Route
 					path='shop/*'
-					element={currentUser ? <Shop /> : <Navigate to='/auth' />}
-				/>
-				<Route
-					path='auth'
-					element={!currentUser ? <Authentication /> : <Navigate to='/' />}
+					element={
+						<PrivateRoute>
+							<Shop />
+						</PrivateRoute>
+					}
 				/>
 				<Route
 					path='checkout'
-					element={<Checkout />}
+					element={
+						<PrivateRoute>
+							<Checkout />
+						</PrivateRoute>
+					}
+				/>
+				<Route
+					path='auth'
+					element={<Authentication />}
 				/>
 			</Route>
 		</Routes>

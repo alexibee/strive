@@ -6,6 +6,7 @@ import { categoriesReducer } from './categories/category.reducer';
 import { cartReducer } from './cart/cart.reducer';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
 	user: userReducer,
@@ -15,19 +16,21 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
 	key: 'root',
-	storage,
-	blacklist: ['user'],
+	storage: storage,
+	whitelist: ['cart'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const middlewares = [process.env.NODE_ENV === 'development' && logger].filter(
-	Boolean
-);
+const middlewares = [
+	process.env.NODE_ENV !== 'production' && logger,
+	thunk,
+].filter(Boolean);
 
 export const store = configureStore({
 	reducer: persistedReducer,
 	middleware: middlewares,
+	devTools: process.env.NODE_ENV !== 'production',
 });
 
 export const persistor = persistStore(store);

@@ -4,12 +4,17 @@ import { useParams } from 'react-router-dom';
 import './category.styles.scss';
 
 import ProdCard from '../../components/prod-card/prod-card.component';
-import { selectCategoriesMap } from '../../store/categories/category.selector';
+import Spinner from '../../components/spinner/spinner.component';
+import {
+	selectCategoriesIsLoading,
+	selectCategoriesMap,
+} from '../../store/categories/category.selector';
 
 const Category = () => {
 	const { category } = useParams();
 
 	const categoriesMap = useSelector(selectCategoriesMap);
+	const isLoading = useSelector(selectCategoriesIsLoading);
 	const [products, setProducts] = useState([]);
 
 	useEffect(() => {
@@ -20,15 +25,19 @@ const Category = () => {
 		<div className='title-and-category-container'>
 			<h2 className='title'>{category.toUpperCase()}</h2>
 			<hr />
-			<div className='cat-container'>
-				{!!products &&
-					products.map((prod) => (
-						<ProdCard
-							key={prod.id}
-							product={prod}
-						/>
-					))}
-			</div>
+			{isLoading ? (
+				<Spinner />
+			) : (
+				<div className='cat-container'>
+					{!!products &&
+						products.map((prod) => (
+							<ProdCard
+								key={prod.id}
+								product={prod}
+							/>
+						))}
+				</div>
+			)}
 		</div>
 	);
 };

@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -11,9 +10,14 @@ import { ReactComponent as StriveLogo } from '../../assets/strive_logo.svg';
 
 import { signOutUser } from '../../utils/firebase/firebase.utils';
 import { selectIsCartOpen } from '../../store/cart/cart.selector';
+import {
+	selectCurrentUser,
+	selectUserIsLoading,
+} from '../../store/user/user.selector';
 
 const Navigation = () => {
-	const currentUser = useSelector((state) => state.user.currentUser);
+	const currentUser = useSelector(selectCurrentUser);
+	const isLoading = useSelector(selectUserIsLoading);
 	const isCartOpen = useSelector(selectIsCartOpen);
 
 	return (
@@ -25,32 +29,35 @@ const Navigation = () => {
 				>
 					<StriveLogo className='logo' />
 				</Link>
-
-				<div className='nav-links-container'>
-					<Link
-						className='nav-link'
-						to={'/shop'}
-					>
-						SHOP
-					</Link>
-					{currentUser ? (
+				{!isLoading ? (
+					<div className='nav-links-container'>
 						<Link
 							className='nav-link'
-							to='/'
-							onClick={signOutUser}
+							to={'/shop'}
 						>
-							SIGN OUT
+							SHOP
 						</Link>
-					) : (
-						<Link
-							className='nav-link'
-							to='/auth'
-						>
-							SIGN IN
-						</Link>
-					)}
-					{currentUser && <CartIcon />}
-				</div>
+						{currentUser ? (
+							<Link
+								className='nav-link'
+								to='/'
+								onClick={signOutUser}
+							>
+								SIGN OUT
+							</Link>
+						) : (
+							<Link
+								className='nav-link'
+								to='/auth'
+							>
+								SIGN IN
+							</Link>
+						)}
+						{currentUser && <CartIcon />}
+					</div>
+				) : (
+					<></>
+				)}
 				{isCartOpen && <CartDropdown />}
 			</div>
 			<Outlet />

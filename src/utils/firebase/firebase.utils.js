@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+
 import {
 	getAuth,
 	signInWithRedirect,
@@ -21,14 +22,13 @@ import {
 } from 'firebase/firestore';
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyAxGQYa7pNkwtqXJgvs8Qihl12VyS0YgKs',
-	authDomain: 'strive-22-db.firebaseapp.com',
-	projectId: 'strive-22-db',
-	storageBucket: 'strive-22-db.appspot.com',
-	messagingSenderId: '430640204245',
-	appId: '1:430640204245:web:4242b1d745a5d061d2555c',
+	apiKey: process.env.REACT_APP_FIRE_BASE_API_KEY,
+	authDomain: process.env.REACT_APP_FIRE_BASE_AUTH_DOMAIN,
+	projectId: process.env.REACT_APP_FIRE_BASE_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_FIRE_BASE_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_FIRE_BASE_MESSAGING_SENDER_ID,
+	appId: process.env.REACT_APP_FIRE_BASE_APP_ID,
 };
-
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
