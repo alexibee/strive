@@ -9,7 +9,8 @@ import { useEffect } from 'react';
 import { setCurrentUserAsync } from './store/user/user.action';
 
 import { onAuthStateChangedListener } from './utils/firebase/firebase.utils';
-import PrivateRoute from './routes/private-route/PrivateRoute';
+import PrivateRoute from './routes/private-route/private-route.component';
+import Footer from './routes/footer/footer.component';
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -19,14 +20,18 @@ const App = () => {
 			dispatch(setCurrentUserAsync(user))
 		);
 		return unsubscribe;
-	}, []);
+	});
 
 	return (
 		<Routes>
 			<Route
 				exact
 				path='/'
-				element={<Navigation />}
+				element={
+					<>
+						<Navigation /> <Footer />
+					</>
+				}
 			>
 				<Route
 					index

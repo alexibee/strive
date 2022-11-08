@@ -1,10 +1,8 @@
 import SignUpForm from '../../components/sign-up-form/sign-up-form.component';
 import SignInForm from '../../components/sign-in-form/sign-in-form.component';
 import './authentication.styles.scss';
-import { useEffect } from 'react';
-import { setCurrentUser } from '../../store/user/user.action';
 import { useSelector } from 'react-redux';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import {
 	selectCurrentUser,
 	selectUserIsLoading,

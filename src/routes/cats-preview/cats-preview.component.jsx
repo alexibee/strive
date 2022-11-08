@@ -1,4 +1,5 @@
 import CatPreview from '../../components/cat-preview/cat-preview.component';
+import './cats-preview.styles.scss';
 import { useSelector } from 'react-redux';
 import {
 	selectCategoriesMap,
@@ -11,7 +12,7 @@ const CatsPreview = () => {
 	const isLoading = useSelector(selectCategoriesIsLoading);
 
 	return (
-		<>
+		<div className='cats-preview'>
 			{isLoading ? (
 				<Spinner />
 			) : (
@@ -23,7 +24,7 @@ const CatsPreview = () => {
 					/>
 				))
 			)}
-		</>
+		</div>
 	);
 };
 
