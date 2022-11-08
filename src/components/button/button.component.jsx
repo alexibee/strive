@@ -14,7 +14,7 @@ const Button = ({ children, btnStyle, isLoading, ...rest }) => {
 			{...rest}
 		>
 			{isLoading ? (
-				<div className='btn-spin'>
+				<div className='btn-spi'>
 					<Spinner />
 				</div>
 			) : (
