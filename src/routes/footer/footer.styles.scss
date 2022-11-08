@@ -15,7 +15,6 @@
 	color: grey;
 	font-size: 12px;
 	font-weight: 100;
-	row-gap: 0;
 	flex-grow: 1;
 	background-color: lightgray;
 	grid-template-columns: repeat(4, 1fr);
@@ -24,6 +23,7 @@
 		flex-direction: column;
 		justify-content: space-around;
 		.footer-link {
+			margin: auto;
 			&:hover {
 				font-weight: 500;
 			}
@@ -34,6 +34,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 		.footer-link {
+			margin: auto;
 			&:hover {
 				font-weight: 500;
 			}
