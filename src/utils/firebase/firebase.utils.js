@@ -22,7 +22,7 @@ import {
 } from 'firebase/firestore';
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyAxGQYa7pNkwtqXJgvs8Qihl12VyS0YgKs',
+	apiKey: process.env.REACT_APP_FIRE_BASE_API_KEY,
 	authDomain: process.env.REACT_APP_FIRE_BASE_AUTH_DOMAIN,
 	projectId: process.env.REACT_APP_FIRE_BASE_PROJECT_ID,
 	storageBucket: process.env.REACT_APP_FIRE_BASE_STORAGE_BUCKET,
