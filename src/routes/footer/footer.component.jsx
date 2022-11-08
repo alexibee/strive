@@ -65,7 +65,7 @@ const Footer = () => {
 							Sneakers
 						</Link>
 					</div>
-					<div className='footer-column'>
+					<div className='sign-in-links'>
 						{!currentUser && !isLoading ? (
 							<>
 								<Link

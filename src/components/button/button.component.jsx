@@ -4,6 +4,7 @@ import './button.styles.scss';
 export const BUTTON_STYLE_CLASSES = {
 	google: 'google',
 	inverted: 'inverted',
+	invertedSm: 'inverted-sm',
 };
 
 const Button = ({ children, btnStyle, isLoading, ...rest }) => {

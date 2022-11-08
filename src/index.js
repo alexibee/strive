@@ -9,6 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Elements } from '@stripe/react-stripe-js';
 import { stripePromise } from './utils/stripe/stripe.utils';
+import ScrollToTop from './routes/scroll-to-top/scroll-to-top.component';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -20,6 +21,7 @@ root.render(
 			>
 				<BrowserRouter>
 					<Elements stripe={stripePromise}>
+						<ScrollToTop />
 						<App />
 					</Elements>
 				</BrowserRouter>
