@@ -1,6 +1,6 @@
 import './button.styles.scss';
 
-const BUTTON_STYLE_CLASSES = {
+export const BUTTON_STYLE_CLASSES = {
 	google: 'google',
 	inverted: 'inverted',
 };

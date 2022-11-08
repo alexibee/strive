@@ -14,16 +14,6 @@ import Spinner from '../../components/spinner/spinner.component';
 const Authentication = () => {
 	const currentUser = useSelector(selectCurrentUser);
 	const isLoading = useSelector(selectUserIsLoading);
-	// const currentUser = useSelector
-	// const navigate = useNavigate();
-
-	// console.log(`auth`, currentUser);
-
-	// // useEffect(() => {
-	// // 	if (currentUser) {
-	// // 		navigate('/', { replace: true });
-	// // 	}
-	// // }, [currentUser]);
 
 	return (
 		<>
