@@ -4,17 +4,23 @@ import Button, { BUTTON_STYLE_CLASSES } from '../button/button.component';
 import { useSelector } from 'react-redux';
 import { selectCartTotal } from '../../store/cart/cart.selector';
 import { selectCurrentUser } from '../../store/user/user.selector';
+import { useState } from 'react';
 
 const PaymentForm = () => {
 	const stripe = useStripe();
 	const elements = useElements();
 	const cartTotal = useSelector(selectCartTotal);
 	const currentUser = useSelector(selectCurrentUser);
+	const [isProcessing, setIsProcessing] = useState(false);
+
 	const paymentHandler = async (e) => {
 		e.preventDefault();
 		if (!stripe || !elements) {
 			return;
 		}
+
+		setIsProcessing(true);
+
 		const response = await fetch('/.netlify/functions/create-payment-intent', {
 			method: 'post',
 			headers: {
@@ -30,10 +36,13 @@ const PaymentForm = () => {
 			payment_method: {
 				card: elements.getElement(CardElement),
 				billing_details: {
-					name: currentUser.displayName,
+					name: currentUser ? currentUser.displayName : 'guest',
 				},
 			},
 		});
+
+		setIsProcessing(false);
+
 		if (paymentResult.error) {
 			alert(paymentResult.error.message);
 		} else {
@@ -50,7 +59,12 @@ const PaymentForm = () => {
 			>
 				<h2> Card Payment:</h2>
 				<CardElement />
-				<Button btnStyle={BUTTON_STYLE_CLASSES.inverted}> Pay now </Button>
+				<Button
+					isLoading={isProcessing}
+					btnStyle={BUTTON_STYLE_CLASSES.inverted}
+				>
+					Pay now
+				</Button>
 			</form>
 		</div>
 	);

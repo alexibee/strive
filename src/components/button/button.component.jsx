@@ -1,3 +1,4 @@
+import Spinner from '../spinner/spinner.component';
 import './button.styles.scss';
 
 export const BUTTON_STYLE_CLASSES = {
@@ -5,13 +6,20 @@ export const BUTTON_STYLE_CLASSES = {
 	inverted: 'inverted',
 };
 
-const Button = ({ children, btnStyle, ...rest }) => {
+const Button = ({ children, btnStyle, isLoading, ...rest }) => {
 	return (
 		<button
 			className={`button-container ${BUTTON_STYLE_CLASSES[btnStyle]}`}
+			disabled={isLoading}
 			{...rest}
 		>
-			{children}
+			{isLoading ? (
+				<div className='btn-spin'>
+					<Spinner />
+				</div>
+			) : (
+				children
+			)}
 		</button>
 	);
 };
