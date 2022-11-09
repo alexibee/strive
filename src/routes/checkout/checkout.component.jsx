@@ -6,10 +6,18 @@ import {
 	selectCartTotal,
 } from '../../store/cart/cart.selector';
 import PaymentForm from '../../components/payment-form/payment-form.component';
+import Button from '../../components/button/button.component';
+import { useState } from 'react';
+import Modal from '../../components/modal/modal.component';
 
 const Checkout = () => {
 	const cartItems = useSelector(selectCartItems);
 	const cartTotal = useSelector(selectCartTotal);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const toggleModal = () => {
+		setIsModalOpen((prev) => !prev);
+	};
 	return (
 		<div className='checkout-container'>
 			<h1> Checkout</h1>
@@ -39,7 +47,13 @@ const Checkout = () => {
 				);
 			})}
 			<span className='total'>Total: £{cartTotal} </span>
-			<PaymentForm />
+			<Button onClick={toggleModal}>Proceed to payment</Button>
+			<Modal
+				isOpen={isModalOpen}
+				setIsOpen={setIsModalOpen}
+			>
+				<PaymentForm />
+			</Modal>
 		</div>
 	);
 };

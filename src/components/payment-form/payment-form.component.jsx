@@ -1,24 +1,30 @@
 import './payment-form.styles.scss';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import Button, { BUTTON_STYLE_CLASSES } from '../button/button.component';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectCartTotal } from '../../store/cart/cart.selector';
 import { selectCurrentUser } from '../../store/user/user.selector';
 import { useState } from 'react';
+import { setCartItems } from '../../store/cart/cart.action';
+import { useNavigate } from 'react-router-dom';
 
 const PaymentForm = () => {
 	const stripe = useStripe();
 	const elements = useElements();
+	const dispatch = useDispatch();
 	const cartTotal = useSelector(selectCartTotal);
 	const currentUser = useSelector(selectCurrentUser);
 	const [isProcessing, setIsProcessing] = useState(false);
+	const [isAlert, setIsAlert] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
+	const navigate = useNavigate();
 
 	const paymentHandler = async (e) => {
 		e.preventDefault();
 		if (!stripe || !elements) {
 			return;
 		}
-
+		setIsAlert(false);
 		setIsProcessing(true);
 
 		const response = await fetch('/.netlify/functions/create-payment-intent', {
@@ -44,10 +50,13 @@ const PaymentForm = () => {
 		setIsProcessing(false);
 
 		if (paymentResult.error) {
-			alert(paymentResult.error.message);
+			setIsAlert(true);
+			setAlertMessage(`${paymentResult.error.message}`);
 		} else {
 			if (paymentResult.paymentIntent.status === 'succeeded') {
 				alert('Payment successful!');
+				dispatch(setCartItems([]));
+				navigate('/shop');
 			}
 		}
 	};
@@ -57,13 +66,14 @@ const PaymentForm = () => {
 				className='form-container'
 				onSubmit={paymentHandler}
 			>
-				<h2> Card Payment:</h2>
+				<h2> Please enter your card details:</h2>
 				<CardElement />
+				{isAlert && <span className='alert'>{alertMessage}</span>}
 				<Button
 					isLoading={isProcessing}
 					btnStyle={BUTTON_STYLE_CLASSES.inverted}
 				>
-					Pay now
+					Confirm
 				</Button>
 			</form>
 		</div>
