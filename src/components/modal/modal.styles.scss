@@ -6,7 +6,11 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	transform: translate(0, -140px);
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
 }
 
 .modal-wrapper {
