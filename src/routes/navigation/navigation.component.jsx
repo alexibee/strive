@@ -1,5 +1,5 @@
 import { Outlet, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './navigation.styles.scss';
 
@@ -14,14 +14,28 @@ import {
 	selectCurrentUser,
 	selectUserIsLoading,
 } from '../../store/user/user.selector';
+import { setIsCartOpen } from '../../store/cart/cart.action';
+import { useRef } from 'react';
 
 const Navigation = () => {
 	const currentUser = useSelector(selectCurrentUser);
 	const isLoading = useSelector(selectUserIsLoading);
 	const isCartOpen = useSelector(selectIsCartOpen);
+	const dispatch = useDispatch();
+	const cartRef = useRef();
 
 	return (
-		<div className='body-wrapper'>
+		<div
+			className='body-wrapper'
+			onClick={(e) => {
+				if (
+					isCartOpen &&
+					cartRef.current &&
+					!cartRef.current.contains(e.target)
+				)
+					dispatch(setIsCartOpen(false));
+			}}
+		>
 			<div className='navigation'>
 				<Link
 					className='logo-container'
@@ -58,7 +72,7 @@ const Navigation = () => {
 				) : (
 					<></>
 				)}
-				{isCartOpen && <CartDropdown />}
+				{isCartOpen && <CartDropdown ref={cartRef} />}
 			</div>
 			<Outlet />
 		</div>

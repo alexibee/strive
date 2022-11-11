@@ -1,34 +1,30 @@
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './checkout.styles.scss';
 import {
 	selectCartCount,
 	selectCartItems,
 	selectCartTotal,
 } from '../../store/cart/cart.selector';
-import PaymentForm from '../../components/payment-form/payment-form.component';
 import Button from '../../components/button/button.component';
-import { useState } from 'react';
 import Modal from '../../components/modal/modal.component';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { setIsModalOpen, setModalType } from '../../store/modal/modal.action';
 
 const Checkout = () => {
 	const cartItems = useSelector(selectCartItems);
 	const cartTotal = useSelector(selectCartTotal);
 	const cartCount = useSelector(selectCartCount);
-	const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const openPayment = () => {
-		setIsPaymentOpen((prev) => !prev);
+		dispatch(setModalType('payment'));
+		dispatch(setIsModalOpen(true));
 	};
 	return (
 		<>
-			<Modal
-				isOpen={isPaymentOpen}
-				setIsOpen={setIsPaymentOpen}
-			>
-				<PaymentForm />
-			</Modal>
+			<Modal />
 			<div className='checkout-container'>
 				<div className='checkout-cart-container'>
 					<div className='checkout-main-header'>
@@ -51,21 +47,27 @@ const Checkout = () => {
 							<span>Remove</span>
 						</div>
 					</div>
+
 					{cartCount ? (
-						cartItems.map((item) => {
-							return (
-								<CheckoutItem
-									key={item.id}
-									item={item}
-								/>
-							);
-						})
+						<div className='checkout-items'>
+							{cartItems.map((item) => {
+								return (
+									<CheckoutItem
+										key={item.id}
+										item={item}
+									/>
+								);
+							})}
+						</div>
 					) : (
 						<>
 							<h2>Your cart is empty...</h2>
-							<Link to='/shop'>
-								<Button>Continue shopping</Button>
-							</Link>
+							<Button
+								addClass='back'
+								onClick={() => navigate('/shop')}
+							>
+								Continue shopping
+							</Button>
 						</>
 					)}
 				</div>

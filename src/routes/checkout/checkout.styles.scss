@@ -1,18 +1,11 @@
 .checkout-container {
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
+	width: 95%;
+	display: grid;
+	grid-auto-columns: 2fr 1fr;
 	margin: 50px auto 150px auto;
-	padding: 0 40px;
-	h2 {
-		margin: auto;
-	}
-	a {
-		margin: 0 auto;
-	}
+
 	.checkout-cart-container {
-		flex-grow: 1;
+		grid-column: 1;
 		min-height: 60vh;
 		min-width: 65%;
 		display: flex;
@@ -20,10 +13,20 @@
 		align-items: flex-start;
 		padding: 20px 40px;
 		border: 1px solid black;
+		h2 {
+			margin: auto;
+		}
+		.back {
+			margin: 0 auto;
+		}
+		.checkout-items {
+			width: 100%;
+		}
 		.checkout-main-header {
 			margin: 0 auto;
 		}
 		.checkout-header {
+			border-bottom: 1px solid darkgrey;
 			width: 100%;
 			padding: 10px 0;
 			display: flex;
@@ -40,8 +43,10 @@
 		}
 	}
 	.total-container {
+		grid-column: 2;
 		margin: 0 0 0 20px;
 		min-width: 30%;
+		height: fit-content;
 		padding: 30px;
 		border: 1px solid black;
 		display: flex;

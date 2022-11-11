@@ -7,6 +7,7 @@ import { selectCurrentUser } from '../../store/user/user.selector';
 import { useState } from 'react';
 import { setCartItems } from '../../store/cart/cart.action';
 import { useNavigate } from 'react-router-dom';
+import { setModalType } from '../../store/modal/modal.action';
 
 const PaymentForm = () => {
 	const stripe = useStripe();
@@ -54,8 +55,8 @@ const PaymentForm = () => {
 			setAlertMessage(`${paymentResult.error.message}`);
 		} else {
 			if (paymentResult.paymentIntent.status === 'succeeded') {
-				alert('Payment successful!');
 				dispatch(setCartItems([]));
+				dispatch(setModalType('confirmation'));
 				navigate('/shop');
 			}
 		}

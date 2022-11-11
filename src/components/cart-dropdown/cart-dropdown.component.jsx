@@ -10,8 +10,9 @@ import {
 	selectCartItems,
 	selectIsCartOpen,
 } from '../../store/cart/cart.selector';
+import { forwardRef } from 'react';
 
-const CartDropdown = () => {
+const CartDropdown = forwardRef((props, ref) => {
 	const cartItems = useSelector(selectCartItems);
 	const isCartOpen = useSelector(selectIsCartOpen);
 	const dispatch = useDispatch();
@@ -30,7 +31,10 @@ const CartDropdown = () => {
 	};
 
 	return (
-		<div className='cart-dropdown-container'>
+		<div
+			className='cart-dropdown-container'
+			ref={ref}
+		>
 			<Link
 				className='close-dropdown'
 				onClick={closeCartDropdown}
@@ -46,7 +50,7 @@ const CartDropdown = () => {
 						/>
 					))
 				) : (
-					<span className='empty-message'> Your cart is empty</span>
+					<span className='empty-message'>Your cart is empty</span>
 				)}
 			</div>
 			{!!cartItems.length && (
@@ -54,6 +58,6 @@ const CartDropdown = () => {
 			)}
 		</div>
 	);
-};
+});
 
 export default CartDropdown;

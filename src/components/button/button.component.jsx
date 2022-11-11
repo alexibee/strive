@@ -7,10 +7,12 @@ export const BUTTON_STYLE_CLASSES = {
 	invertedSm: 'inverted-sm',
 };
 
-const Button = ({ children, btnStyle, isLoading, ...rest }) => {
+const Button = ({ children, btnStyle, isLoading, addClass, ...rest }) => {
 	return (
 		<button
-			className={`button-container ${BUTTON_STYLE_CLASSES[btnStyle]}`}
+			className={`button-container ${BUTTON_STYLE_CLASSES[btnStyle]} ${
+				addClass ? addClass : ''
+			}`}
 			disabled={isLoading}
 			{...rest}
 		>
