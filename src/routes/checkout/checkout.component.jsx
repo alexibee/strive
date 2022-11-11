@@ -63,11 +63,8 @@ const Checkout = () => {
 					) : (
 						<>
 							<h2>Your cart is empty...</h2>
-							<Link
-								style={{ margin: '0 auto 50px auto', fontSize: '24px' }}
-								to='/shop'
-							>
-								&#10094; &#10094; Go Back To Shop
+							<Link to='/shop'>
+								<Button>Continue shopping</Button>
 							</Link>
 						</>
 					)}
