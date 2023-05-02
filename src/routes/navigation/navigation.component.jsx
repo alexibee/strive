@@ -7,8 +7,6 @@ import CartIcon from '../../components/cart-icon/cart-icon.component';
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
 
 import { ReactComponent as StriveLogo } from '../../assets/strive_logo.svg';
-
-import { signOutUser } from '../../utils/firebase/firebase.utils';
 import { selectIsCartOpen } from '../../store/cart/cart.selector';
 import {
 	selectCurrentUser,
@@ -16,6 +14,7 @@ import {
 } from '../../store/user/user.selector';
 import { setIsCartOpen } from '../../store/cart/cart.action';
 import { useRef } from 'react';
+import { signOutStart } from '../../store/user/user.action';
 
 const Navigation = () => {
 	const currentUser = useSelector(selectCurrentUser);
@@ -23,6 +22,8 @@ const Navigation = () => {
 	const isCartOpen = useSelector(selectIsCartOpen);
 	const dispatch = useDispatch();
 	const cartRef = useRef();
+
+	const signOutUser = () => dispatch(signOutStart());
 
 	return (
 		<div

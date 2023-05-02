@@ -1,15 +1,19 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { signOutStart } from '../../store/user/user.action';
 import {
 	selectCurrentUser,
 	selectUserIsLoading,
 } from '../../store/user/user.selector';
-import { signOutUser } from '../../utils/firebase/firebase.utils';
 import './footer.styles.scss';
 
 const Footer = () => {
 	const currentUser = useSelector(selectCurrentUser);
 	const isLoading = useSelector(selectUserIsLoading);
+	const dispatch = useDispatch();
+
+	const signOutUser = () => dispatch(signOutStart());
+
 	return (
 		<>
 			<div className='page-footer'>

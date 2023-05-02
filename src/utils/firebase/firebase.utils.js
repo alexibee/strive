@@ -58,8 +58,8 @@ export const addCollectionAndDocs = async (collectionKey, objsToAdd, field) => {
 	console.log('done');
 };
 
-export const getCategoriesAndDocs = async () => {
-	const collectionRef = collection(db, 'categories');
+export const getCategoriesAndDocs = async (label) => {
+	const collectionRef = collection(db, label);
 	const q = query(collectionRef);
 
 	const querySnapshot = await getDocs(q);
@@ -84,11 +84,11 @@ export const createUserDocFromAuth = async (userAuth, otherInfo = {}) => {
 				...otherInfo,
 			});
 		} catch (error) {
-			console.error(error);
+			console.log('error creating the user', error.message);
 		}
 	}
 
-	return userDocRef;
+	return userSnapshot;
 };
 
 export const defaultSignIn = async (email, password) => {
@@ -105,3 +105,16 @@ export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
 	onAuthStateChanged(auth, callback);
+
+export const getCurrentUser = () => {
+	return new Promise((resolve, reject) => {
+		const unsubscribe = onAuthStateChanged(
+			auth,
+			(userAuth) => {
+				unsubscribe();
+				resolve(userAuth);
+			},
+			reject
+		);
+	});
+};

@@ -7,6 +7,8 @@ import {
 
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
+import { signUpStart } from '../../store/user/user.action';
+import { useDispatch } from 'react-redux';
 
 const blankFormFields = {
 	displayName: '',
@@ -18,6 +20,7 @@ const blankFormFields = {
 const SignUpForm = () => {
 	const [formFields, setFormFields] = useState(blankFormFields);
 	const { displayName, email, password, confirmPassword } = formFields;
+	const dispatch = useDispatch();
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -35,13 +38,9 @@ const SignUpForm = () => {
 			alert('Passwords do not match');
 			return;
 		}
-		try {
-			const { user } = await createAuthUserWithEmailAndPassword(
-				email,
-				password
-			);
 
-			await createUserDocFromAuth(user, { displayName });
+		try {
+			dispatch(signUpStart(email, password, displayName));
 
 			resetFormFields();
 		} catch (error) {
