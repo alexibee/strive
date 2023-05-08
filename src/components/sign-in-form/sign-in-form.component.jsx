@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './sign-in-form.styles.scss';
 
 import FormInput from '../form-input/form-input.component';
@@ -6,8 +6,10 @@ import Button from '../button/button.component';
 import {
 	emailSignInStart,
 	googleSignInStart,
+	signInFail,
 } from '../../store/user/user.action';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUserError } from '../../store/user/user.selector';
 
 const blankFormFields = {
 	email: '',
@@ -18,12 +20,31 @@ const SignInForm = () => {
 	const [formFields, setFormFields] = useState(blankFormFields);
 	const { email, password } = formFields;
 	const dispatch = useDispatch();
+	const userError = useSelector(selectUserError);
 
 	// useEffect(() => {
 	// 	(async function () {
 	// 		await getRedirectResult(auth);
 	// 	})();
 	// });
+
+	useEffect(() => {
+		if (userError) {
+			switch (userError.code) {
+				case 'auth/wrong-password':
+					alert('incorrect password for email');
+					break;
+				case 'auth/user-not-found':
+					alert('no user associated with this email');
+					break;
+				default:
+					alert(userError.message);
+					break;
+			}
+			console.error(userError);
+			dispatch(signInFail(null));
+		}
+	}, [userError, dispatch]);
 
 	const logInGoogleUser = async () => {
 		dispatch(googleSignInStart());
@@ -41,22 +62,12 @@ const SignInForm = () => {
 	};
 
 	const handleSubmit = async (event) => {
-		event.preventDefault();
 		try {
+			event.preventDefault();
 			dispatch(emailSignInStart(email, password));
 			resetFormFields();
 		} catch (error) {
-			switch (error.code) {
-				case 'auth/wrong-password':
-					alert('incorrect password for email');
-					break;
-				case 'auth/user-not-found':
-					alert('no user associated with this email');
-					break;
-				default:
-					break;
-			}
-			console.error(error);
+			console.log(error);
 		}
 	};
 

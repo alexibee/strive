@@ -38,6 +38,7 @@ const CartDropdown = forwardRef((props, ref) => {
 			<Link
 				className='close-dropdown'
 				onClick={closeCartDropdown}
+				to='#'
 			>
 				&times;
 			</Link>

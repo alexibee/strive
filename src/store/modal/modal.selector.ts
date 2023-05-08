@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
+import { ModalState } from './modal.reducer';
+import { RootState } from '../store';
 
-const selectModalReducer = (state) => state.modal;
+const selectModalReducer = (state: RootState): ModalState => state.modal;
 
 export const selectIsModalOpen = createSelector(
 	[selectModalReducer],

@@ -28,8 +28,19 @@ const CartItem = ({ item }) => {
 					{quantity} x £{price}
 				</span>
 				<div className='plus-minus-links'>
-					<Link onClick={removeItemHandler}>-</Link> /
-					<Link onClick={addItemHandler}>+</Link>
+					<Link
+						to='#'
+						onClick={removeItemHandler}
+					>
+						-
+					</Link>{' '}
+					/
+					<Link
+						to='#'
+						onClick={addItemHandler}
+					>
+						+
+					</Link>
 				</div>
 			</div>
 		</div>
