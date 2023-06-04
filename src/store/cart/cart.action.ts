@@ -25,7 +25,7 @@ const addCartItem = (cart: CartItem[], prodToAdd: CategoryItem): CartItem[] => {
 
 const decreaseCartItem = (
 	cart: CartItem[],
-	prodToDecrease: CartItem
+	prodToDecrease: CategoryItem
 ): CartItem[] => {
 	const { id } = prodToDecrease;
 	let newCart: CartItem[] = [];
@@ -41,7 +41,7 @@ const decreaseCartItem = (
 	return newCart;
 };
 
-const removeCartItem = (cart: CartItem[], prodToRemove: CartItem) => {
+const removeCartItem = (cart: CartItem[], prodToRemove: CategoryItem) => {
 	const { id } = prodToRemove;
 	const newCart = cart.filter((item) => item.id !== id);
 
@@ -77,7 +77,7 @@ export const addItemToCart = (
 };
 export const decreaseItemQuantity = (
 	cartItems: CartItem[],
-	prodToDecrease: CartItem
+	prodToDecrease: CategoryItem
 ) => {
 	const newCartItems = decreaseCartItem(cartItems, prodToDecrease);
 	return setCartItems(newCartItems);

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store, persistor } from './store/store';
@@ -11,8 +11,8 @@ import { Elements } from '@stripe/react-stripe-js';
 import { stripePromise } from './utils/stripe/stripe.utils';
 import ScrollToTop from './routes/scroll-to-top/scroll-to-top.component';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+const rootElement = document.getElementById('root');
+render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<PersistGate
@@ -27,7 +27,8 @@ root.render(
 				</BrowserRouter>
 			</PersistGate>
 		</Provider>
-	</React.StrictMode>
+	</React.StrictMode>,
+	rootElement
 );
 
 // If you want to start measuring performance in your app, pass a function

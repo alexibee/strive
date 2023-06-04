@@ -1,30 +1,29 @@
-import { takeLatest, call, all, put } from 'typed-redux-saga/macro';
+import { takeLatest, put, all, call } from 'typed-redux-saga/macro';
+import { User } from 'firebase/auth';
 
 import { USER_ACTION_TYPES } from './user.types';
 
 import {
+	signInSuccess,
+	signInFail,
+	signUpSuccess,
+	signUpFail,
+	signOutSuccess,
+	signOutFail,
+	EmailSignInStart,
+	SignUpStart,
+	SignUpSuccess,
+} from './user.action';
+
+import {
 	getCurrentUser,
-	createUserDocFromAuth,
-	defaultSignIn,
-	auth,
+	createUserDocumentFromAuth,
+	signInWithGooglePopup,
+	signInAuthUserWithEmailAndPassword,
 	createAuthUserWithEmailAndPassword,
 	signOutUser,
 	AdditionalInformation,
-	signInWithGooglePopup,
 } from '../../utils/firebase/firebase.utils';
-import {
-	EmailSignInStart,
-	SignInSuccess,
-	SignUpStart,
-	SignUpSuccess,
-	signInFail,
-	signInSuccess,
-	signOutFail,
-	signOutSuccess,
-	signUpFail,
-	signUpSuccess,
-} from './user.action';
-import { User } from 'firebase/auth';
 
 export function* getSnapshotFromUserAuth(
 	userAuth: User,
@@ -32,10 +31,11 @@ export function* getSnapshotFromUserAuth(
 ) {
 	try {
 		const userSnapshot = yield* call(
-			createUserDocFromAuth,
+			createUserDocumentFromAuth,
 			userAuth,
 			additionalDetails
 		);
+
 		if (userSnapshot) {
 			yield* put(
 				signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() })
@@ -48,7 +48,7 @@ export function* getSnapshotFromUserAuth(
 
 export function* signInWithGoogle() {
 	try {
-		const { user } = yield* call(signInWithGooglePopup, auth);
+		const { user } = yield* call(signInWithGooglePopup);
 		yield* call(getSnapshotFromUserAuth, user);
 	} catch (error) {
 		yield* put(signInFail(error as Error));
@@ -59,7 +59,12 @@ export function* signInWithEmail({
 	payload: { email, password },
 }: EmailSignInStart) {
 	try {
-		const userCredential = yield* call(defaultSignIn, email, password);
+		const userCredential = yield* call(
+			signInAuthUserWithEmailAndPassword,
+			email,
+			password
+		);
+
 		if (userCredential) {
 			const { user } = userCredential;
 			yield* call(getSnapshotFromUserAuth, user);
@@ -88,6 +93,7 @@ export function* signUp({
 			email,
 			password
 		);
+
 		if (userCredential) {
 			const { user } = userCredential;
 			yield* put(signUpSuccess(user, { displayName }));

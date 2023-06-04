@@ -31,26 +31,24 @@ export const userReducer = (
 		return {
 			...state,
 			currentUser: action.payload,
-			isLoading: false,
-			error: null,
 		};
 	}
 	if (signOutSuccess.match(action)) {
-		return { ...state, currentUser: null, isLoading: false, error: null };
+		return { ...state, currentUser: null };
 	}
-	if (
-		signOutStart.match(action) ||
-		googleSignInStart.match(action) ||
-		emailSignInStart.match(action)
-	) {
-		return { ...state, isLoading: true, error: null };
-	}
+	// if (
+	// 	signOutStart.match(action) ||
+	// 	googleSignInStart.match(action) ||
+	// 	emailSignInStart.match(action)
+	// ) {
+	// 	return { ...state, isLoading: true, error: null };
+	// }
 	if (
 		signOutFail.match(action) ||
 		signInFail.match(action) ||
 		signUpFail.match(action)
 	) {
-		return { ...state, error: action.payload, isLoading: false };
+		return { ...state, error: action.payload };
 	}
 	return state;
 };
